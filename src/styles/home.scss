@@ -9,9 +9,32 @@
     align-items: center;
     justify-content: flex-start;
 
-    & .header {
-        font-weight: bold;
-        font-size: 38px;
-        font-weight: 700;
+    & header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .header {
+            font-weight: bold;
+            font-size: 38px;
+            font-weight: 700;
+        }
+        & .header-search-box {
+            display: flex;
+            margin-top: 41px;
+        }
+    }
+
+    & section {
+        margin-top: 60px;
+
+        & .cards-wrapper {
+            width: 100%;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            row-gap: 20px;
+            column-gap: 20px;
+        }
     }
 }
