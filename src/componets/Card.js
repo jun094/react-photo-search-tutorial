@@ -83,14 +83,12 @@ function CardComponent({ data, img }) {
     const { center, date_created, description, media_type, nasa_id, title } = data;
 
     const getDatas = () => {
-        setTimeout(() => {
-            Axios.get(img).then((res) => {
-                for (let i = 0, n = res.data.length; i < n; i++) {
-                    if (res.data[i].indexOf('small') !== -1) setUrl(res.data[i]); //small size를 url로 선택
-                }
-                setIsLoading(false);
-            });
-        }, 1000);
+        Axios.get(img).then((res) => {
+            for (let i = 0, n = res.data.length; i < n; i++) {
+                if (res.data[i].indexOf('small') !== -1) setUrl(res.data[i]); //small size를 url로 선택
+            }
+            setIsLoading(false);
+        });
     };
     useEffect(() => {
         getDatas();

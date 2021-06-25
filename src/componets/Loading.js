@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Spinner } from 'reactstrap';
 
 const LoadingBox = styled.div`
     display: flex;
@@ -10,7 +11,11 @@ const LoadingBox = styled.div`
 `;
 
 function Loading() {
-    return <LoadingBox>로딩중...</LoadingBox>;
+    return (
+        <LoadingBox>
+            <Spinner color="dark" />
+        </LoadingBox>
+    );
 }
 
 export default Loading;

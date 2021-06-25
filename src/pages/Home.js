@@ -17,14 +17,12 @@ function Home() {
     const API_URL = 'https://images-api.nasa.gov/search?q=seoul&page=1';
 
     const getDatas = () => {
-        setTimeout(() => {
-            Axios.get(API_URL).then((res) => {
-                setItems(res.data.collection.items);
-                setHits(res.data.collection.metadata.total_hists);
+        Axios.get(API_URL).then((res) => {
+            setItems(res.data.collection.items);
+            setHits(res.data.collection.metadata.total_hists);
 
-                setIsLoading(false);
-            });
-        }, 1000);
+            setIsLoading(false);
+        });
     };
     useEffect(() => {
         getDatas();
