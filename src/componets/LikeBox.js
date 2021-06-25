@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`
+    cursor: pointer;
     width: fit-content;
     padding: 9px 16px;
     display: flex;
@@ -17,9 +18,9 @@ const Box = styled.div`
     }
 `;
 
-function LikeBox() {
+function LikeBox({ toggleDrawer }) {
     return (
-        <Box>
+        <Box onClick={toggleDrawer(true)}>
             <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     fillRule="evenodd"
