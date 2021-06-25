@@ -8,7 +8,8 @@ import Input from '../componets/btnGroup/Input';
 import SearchBtn from '../componets/btnGroup/SearchBtn';
 import CardLists from '../componets/CardLists';
 import Loading from '../componets/Loading';
-import DrawerList from '../componets/DrawerList';
+import Drawer from '../componets/Drawer';
+import DrawerLists from '../componets/DrawerLists';
 
 function Home() {
     /** 변수 선언부 **/
@@ -17,7 +18,7 @@ function Home() {
     const [items, setItems] = useState([]); // 사진 list 저장
     const [hits, setHits] = useState(0); // 사진 total 개수 저장
     const [isLoading, setIsLoading] = useState(true);
-    const [drawerState, setDrawerState] = useState(true);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     /** 메소드들 **/
     //get API
@@ -30,12 +31,8 @@ function Home() {
         });
     };
     //click drawer
-    const toggleDrawer = (open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setDrawerState(open);
+    const toggleDrawer = () => {
+        setDrawerOpen(!drawerOpen);
     };
 
     /** 컴포넌트 마운트, 언마운트 **/
@@ -55,7 +52,9 @@ function Home() {
             </header>
 
             <section>
-                <DrawerList anchor="right" drawerState={drawerState} toggleDrawer={toggleDrawer} />
+                <Drawer open={drawerOpen} toggleDrawer={toggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
+                    <DrawerLists />
+                </Drawer>
                 <LikeBox toggleDrawer={toggleDrawer} />
 
                 {isLoading && <Loading />}

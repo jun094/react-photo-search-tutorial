@@ -75,6 +75,7 @@ const CustomCard = styled.div`
 `;
 
 function CardComponent({ data, img }) {
+    console.log(img);
     const [url, setUrl] = useState(null); // 사진의 url
     const [isLoading, setIsLoading] = useState(true);
     const [like, setLike] = useState(false); //default는 like 안 누른 상태
@@ -164,3 +165,16 @@ function CardComponent({ data, img }) {
 }
 
 export default CardComponent;
+
+CardComponent.defaultProps = {
+    data: {
+        center: 'center-data...',
+        date_created: '1969-07-21T00:00:00Z',
+        description: 'description-data...',
+        keywords: [],
+        media_type: 'image',
+        nasa_id: 'nasa-id...',
+        title: 'title-data...',
+    },
+    img: 'https://images-assets.nasa.gov/image/iss010e12103/collection.json',
+};
