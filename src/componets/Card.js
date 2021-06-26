@@ -75,7 +75,6 @@ const CustomCard = styled.div`
 `;
 
 function CardComponent({ data, img }) {
-    console.log(img);
     const [url, setUrl] = useState(null); // 사진의 url
     const [isLoading, setIsLoading] = useState(true);
     const [like, setLike] = useState(false); //default는 like 안 누른 상태
@@ -95,9 +94,32 @@ function CardComponent({ data, img }) {
         getDatas();
     }, []);
 
-    //메소드 정리
-    const handleLike = (e) => {
-        const { name } = e.target;
+    /* 메소드 정리 */
+    // card like 버튼 클릭 메소드
+    const handleLike = (click) => {
+        console.log(click, nasa_id);
+        if (click === 'like') {
+            let tmp = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
+
+            if (tmp === null) tmp = []; //첫 like 클릭인 경우
+
+            tmp.push({
+                nasa_id: nasa_id,
+                center: center,
+                date_created: date_created,
+                description: description,
+                media_type: media_type,
+                title: title,
+            });
+
+            localStorage.setItem('nasa-like-2106261404', JSON.stringify(tmp)); // 직렬화해서 localstorage에 저장
+        } else if (click === 'none-like') {
+            let tmp = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
+
+            tmp.splice(tmp.indexOf(nasa_id), 1);
+
+            localStorage.setItem('nasa-like-2106261404', JSON.stringify(tmp)); // 직렬화해서 localstorage에 저장
+        }
 
         setLike(!like);
     };
@@ -110,8 +132,7 @@ function CardComponent({ data, img }) {
                     <div className="img-wrapper">
                         {!like && (
                             <svg
-                                name="none-like"
-                                onClick={handleLike}
+                                onClick={() => handleLike('like')}
                                 width="20"
                                 height="18"
                                 viewBox="0 0 20 18"
@@ -128,8 +149,7 @@ function CardComponent({ data, img }) {
                         )}
                         {like && (
                             <svg
-                                name="like"
-                                onClick={handleLike}
+                                onClick={() => handleLike('none-like')}
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -138,13 +158,13 @@ function CardComponent({ data, img }) {
                             >
                                 <path
                                     fillRule="evenodd"
-                                    clip-rule="evenodd"
+                                    clipRule="evenodd"
                                     d="M20.2571 5.23837C18.2771 3.25837 15.0686 3.25837 13.0886 5.23837L11.9981 6.32887L10.9046 5.23387C8.92461 3.25538 5.71461 3.25538 3.73461 5.23387C1.75611 7.21387 1.75611 10.4239 3.73461 12.4024L4.82961 13.4974L4.82811 13.4989L11.9981 20.6674L20.2571 12.4069C22.2371 10.4284 22.2371 7.21687 20.2571 5.23837Z"
                                     fill="#FA5F6E"
                                 />
                                 <path
                                     fillRule="evenodd"
-                                    clip-rule="evenodd"
+                                    clipRule="evenodd"
                                     d="M7.31936 3.7494C6.02186 3.7494 4.72436 4.2444 3.73436 5.2344C1.75586 7.21441 1.75586 10.4244 3.73436 12.4044L4.82936 13.4979H4.82786L11.9979 20.6679L20.2569 12.4074C22.2369 10.4274 22.2369 7.2189 20.2569 5.2389C19.2669 4.2489 17.9709 3.7539 16.6719 3.7539C15.3759 3.7539 14.0784 4.2489 13.0884 5.2389L11.9979 6.3294L10.9044 5.2344C9.91286 4.2444 8.61686 3.7494 7.31936 3.7494ZM7.31936 5.7009C8.15186 5.7009 8.93636 6.0249 9.52436 6.6129L10.6194 7.7079L11.9979 9.0879L13.3764 7.7079L14.4669 6.6174C15.0564 6.0294 15.8394 5.7054 16.6719 5.7054C17.5059 5.7054 18.2889 6.0294 18.8784 6.6174C20.0949 7.8339 20.0949 9.8124 18.8784 11.0304L11.9979 17.9094L6.20786 12.1194L5.11286 11.0259C4.52486 10.4364 4.19936 9.6534 4.19936 8.8194C4.19936 7.9854 4.52486 7.2039 5.11286 6.6129C5.70236 6.0249 6.48536 5.7009 7.31936 5.7009Z"
                                     fill="#FA5F6E"
                                 />
