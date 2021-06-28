@@ -5,7 +5,7 @@ function CardLists({ items }) {
     return (
         <div className="cards-wrapper">
             {items.map((i) => (
-                <Card key={i.data.nasa_id} data={i.data} />
+                <Card key={i.nasa_id} data={i} />
             ))}
         </div>
     );

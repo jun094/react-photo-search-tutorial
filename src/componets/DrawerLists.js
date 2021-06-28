@@ -30,23 +30,22 @@ const ListStyle = styled.div`
 `;
 
 function DrawerLists() {
-    const [list, setList] = useState([]);
+    const [items, setItems] = useState([]);
 
     useEffect(() => {
-        if (localStorage.getItem('nasa-like-2106261404')) setList(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
+        if (localStorage.getItem('nasa-like-2106261404')) setItems(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
     }, []);
 
-    window.list = list;
     return (
         <ListStyle>
             <h3>좋아요 리스트</h3>
-            {list.length === 0 ? (
+            {items.length === 0 ? (
                 <div className="drawer-none-cards"> 좋아요 리스트가 없습니다 :(</div>
             ) : (
                 <div className="drawer-cards">
-                    {list.map((i) => (
-                        <Card key={i.nasa_id} />
-                    ))}
+                    {/* {items.map((i) => (
+                        <Card key={i.data.nasa_id} data={i.data} />
+                    ))} */}
                 </div>
             )}
         </ListStyle>

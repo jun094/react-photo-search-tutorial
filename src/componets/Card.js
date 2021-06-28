@@ -82,25 +82,25 @@ function CardComponent({ data }) {
     /** 메소드 정리 **/
     // card like 버튼 클릭 메소드
     const handleLike = (click) => {
-        //최초 like를 누른 경우
-        //like-list를 위한 localStorage 배열 세팅
-        if (localStorage.getItem('nasa-like-2106261404') === null) {
-            localStorage.setItem('nasa-like-2106261404', '[]'); //순차적(like 누른 순) 저장을 위해 배열 사용
-        }
+        let likeInfo = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
 
-        //사진 like를 누른 경우,
+        // like를 누른 경우, 해당 nasa_id 배열로 저장 -> 순차적(like 누른 순) 저장을 위해 배열 사용
         if (click === 'like') {
-            //기존의 데이터 복사 후, like 누른 데이터 push
-            let arr = [...JSON.parse(localStorage.getItem('nasa-like-2106261404')), { data: data }];
-
-            localStorage.setItem('nasa-like-2106261404', JSON.stringify(arr)); // 직렬화해서 localstorage에 저장
+            //최초 like를 누른 경우
+            if (likeInfo === null) {
+                // 직렬화해서 localstorage에 저장
+                localStorage.setItem('nasa-like-2106261404', JSON.stringify([nasa_id]));
+            }
+            //like data가 있는 경우
+            else {
+                // 직렬화해서 localstorage에 저장
+                localStorage.setItem('nasa-like-2106261404', JSON.stringify([...likeInfo, nasa_id]));
+            }
         }
         //사진 like를 취소한 경우,
         else if (click === 'none-like') {
-            let arr = JSON.parse(localStorage.getItem('nasa-like-2106261404')).filter((list) => list.nasa_id !== nasa_id);
-            // user_id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
-
-            localStorage.setItem('nasa-like-2106261404', JSON.stringify(arr)); // 직렬화해서 localstorage에 저장
+            // nasa_id 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
+            localStorage.setItem('nasa-like-2106261404', JSON.stringify(likeInfo.filter((i) => i !== nasa_id)));
         }
 
         setLike(!like);
@@ -168,13 +168,13 @@ export default CardComponent;
 
 CardComponent.defaultProps = {
     data: {
-        center: 'center-data...',
-        date_created: '1969-07-21T00:00:00Z',
-        description: 'description-data...',
-        keywords: [],
-        media_type: 'image',
-        nasa_id: 'nasa-id...',
-        title: 'title-data...',
+        center: '--',
+        date_created: '--',
+        description: '--',
+        imgurl: 'https://images-assets.nasa.gov/image/iss010e12103/iss010e12103~thumb.jpg',
+        isLike: false,
+        media_type: '--',
+        nasa_id: '--',
+        title: '--',
     },
-    img: 'https://images-assets.nasa.gov/image/iss010e12103/collection.json',
 };
