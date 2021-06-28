@@ -5,7 +5,7 @@ const DrawerStyle = styled.div`
     position: fixed;
     top: 0;
     right: ${(props) => (props.open ? 0 : '-500px')};
-    height: 100vh;
+    height: 100%;
     transition: right 0.4s;
     box-sizing: border-box;
     z-index: 999;
@@ -18,8 +18,9 @@ const DrawerBox = styled.div`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.color};
     padding: 80px 96px;
-    box-shadow: -3px 0px 30px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: -2px 0px 10px rgb(0 0 0 / 15%);
     margin-left: 24px;
+    overflow: auto;
 `;
 
 const DrawerCancel = styled.div`
@@ -32,7 +33,7 @@ const DrawerCancel = styled.div`
     justify-content: center;
     background: #5094fa;
     border-radius: 3px;
-    box-shadow: -3px 0px 30px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: -2px 0px 10px rgb(0 0 0 / 15%);
 `;
 
 function Drawer({ children, open, color, toggleDrawer, backgroundColor }) {

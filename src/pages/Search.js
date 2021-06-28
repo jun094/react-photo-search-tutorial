@@ -3,30 +3,53 @@ import Axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../styles/home.scss';
 import LikeBox from '../componets/LikeBox';
-import DropDownBtn from '../componets/btnGroup/DropDownBtn';
-import Input from '../componets/btnGroup/Input';
-import SearchBtn from '../componets/btnGroup/SearchBtn';
+import DropDownBtn from '../componets/searchBtnGroup/DropDownBtn';
+import Input from '../componets/searchBtnGroup/Input';
+import SearchBtn from '../componets/searchBtnGroup/SearchBtn';
 import CardLists from '../componets/CardLists';
 import Loading from '../componets/Loading';
 import Drawer from '../componets/Drawer';
 import DrawerLists from '../componets/DrawerLists';
+import qs from 'qs';
 
-function Home() {
+function Search({ location }) {
     /** 변수 선언부 **/
-    const API_URL = 'https://images-api.nasa.gov/search?q=seoul&page=1';
-
+    const [query, setQuery] = useState(
+        qs.parse(location.search, {
+            ignoreQueryPrefix: true,
+        })
+    );
     const [items, setItems] = useState([]); // 사진 list 저장
-    const [hits, setHits] = useState(0); // 사진 total 개수 저장
     const [isLoading, setIsLoading] = useState(true);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    window.items = items;
 
     /** 메소드들 **/
     //get API
     const getDatas = () => {
-        Axios.get(API_URL).then((res) => {
-            setItems(res.data.collection.items);
-            setHits(res.data.collection.metadata.total_hists);
+        Axios.get(`https://images-api.nasa.gov/search${location.search}`).then((res) => {
+            console.log(res.data.collection.items);
+            console.log(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
 
+            const arr = res.data.collection.items;
+            window.arr = arr;
+            // if (localStorage.getItem('nasa-like-2106261404') !== null) {
+            // }
+
+            //api에서 불러온 card-list 상태 관리
+            setItems(
+                res.data.collection.items.map((i) => {
+                    return {
+                        data: {
+                            ...i.data[0],
+                            imgurl: i.links[0].href,
+                            isLike: false,
+                        },
+                    };
+                })
+            );
+
+            //동기적 흐름을 위한 loading UI
             setIsLoading(false);
         });
     };
@@ -64,4 +87,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Search;

@@ -21,26 +21,34 @@ const ListStyle = styled.div`
             margin-top: 20px;
         }
     }
+    & .drawer-none-cards {
+        font-size: 16px;
+        min-width: 212px;
+        text-align: center;
+        margin-top: 24px;
+    }
 `;
 
 function DrawerLists() {
     const [list, setList] = useState([]);
 
-    console.log(list);
-
     useEffect(() => {
-        setList(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
+        if (localStorage.getItem('nasa-like-2106261404')) setList(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
     }, []);
 
+    window.list = list;
     return (
         <ListStyle>
             <h3>좋아요 리스트</h3>
-
-            <div className="drawer-cards">
-                {list.map((i) => (
-                    <Card key={i} />
-                ))}
-            </div>
+            {list.length === 0 ? (
+                <div className="drawer-none-cards"> 좋아요 리스트가 없습니다 :(</div>
+            ) : (
+                <div className="drawer-cards">
+                    {list.map((i) => (
+                        <Card key={i.nasa_id} />
+                    ))}
+                </div>
+            )}
         </ListStyle>
     );
 }
