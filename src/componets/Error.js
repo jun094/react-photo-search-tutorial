@@ -16,18 +16,14 @@ const StyleError = styled.div`
     }
 `;
 const Error = ({ location }) => {
+    const query = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+    });
+    const key = Object.keys(query)[0];
+
     return (
         <StyleError>
-            <span>
-                ‘
-                {
-                    qs.parse(location.search, {
-                        ignoreQueryPrefix: true,
-                    }).q
-                }
-                '
-            </span>
-            에 대한 검색결과가 없습니다.
+            <span>‘{query[key]}'</span>에 대한 검색결과가 없습니다.
         </StyleError>
     );
 };
