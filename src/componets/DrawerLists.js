@@ -32,21 +32,22 @@ const ListStyle = styled.div`
 
 function DrawerLists() {
     const state = useContext(ItemsStateContext);
-    const { data } = state;
+    const [likeLists, setLikeLists] = useState([]);
+
+    useEffect(() => {
+        setLikeLists(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
+    }, [localStorage.getItem('nasa-like-2106261404')]);
 
     return (
         <ListStyle>
             <h3>좋아요 리스트</h3>
-            {data === null || data.filter((i) => i.isLike === true).length === 0 ? (
+            {likeLists === null || likeLists.length === 0 ? (
                 <div className="drawer-none-cards"> 좋아요 리스트가 없습니다 :(</div>
             ) : (
                 <div className="drawer-cards">
-                    {data
-                        .filter((i) => i.isLike)
-                        .sort((a, b) => b.date_now - a.date_now)
-                        .map((i) => (
-                            <Card key={i.nasa_id} data={i} />
-                        ))}
+                    {likeLists.map((i) => (
+                        <Card key={i.nasa_id} data={i} />
+                    ))}
                 </div>
             )}
         </ListStyle>

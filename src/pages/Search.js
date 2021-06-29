@@ -16,55 +16,79 @@ const Search = ({ location }) => {
     /** 변수 선언부 **/
     const state = useContext(ItemsStateContext);
     const dispatch = useContext(ItemsDispatchContext);
-
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [query, setQuery] = useState(
         qs.parse(location.search, {
             ignoreQueryPrefix: true,
-        })
+        }).q
     );
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [pageNum, setPageNum] = useState(1);
 
+    window.search = query;
+    window.pageNum = pageNum;
     window.state = state;
 
     /** 메소드들 **/
     //get API
     const getDatas = async () => {
+        console.log(query, pageNum);
         dispatch({ type: 'SETTING_ITEMS' });
 
         try {
-            const res = await Axios.get(`https://images-api.nasa.gov/search${location.search}`);
+            const res = await Axios.get(`https://images-api.nasa.gov/search?q=${query}&page=${pageNum}`);
 
-            //localStorage에서 like 정보를 가져옴.
-            let likeArr = [];
+            let likeArr = []; // like를 누른 nasa_id만 저장할 임시 배열
             if (localStorage.getItem('nasa-like-2106261404') !== null) {
-                likeArr = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
+                //localStorage에서 like 정보를 가져옴.
+                //이후, nasa_id만 추출
+                likeArr = JSON.parse(localStorage.getItem('nasa-like-2106261404')).map((i) => i.nasa_id);
             }
 
             //API에서 불러온 data와 like정보를 함께 전역 상태로 관리
-            dispatch({
-                type: 'SET_ITEMS',
-                data: res.data.collection.items.map((i) => {
-                    return {
-                        ...i.data[0],
-                        imgurl: i.links[0].href,
-                        isLike: likeArr.indexOf(i.data[0].nasa_id) === -1 ? false : true,
-                    };
-                }),
-            });
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_ITEMS',
+                    data: res.data.collection.items.slice(0, 20).map((i) => {
+                        return {
+                            ...i.data[0],
+                            imgurl: i.links[0].href,
+                            isLike: likeArr.indexOf(i.data[0].nasa_id) === -1 ? false : true,
+                        };
+                    }),
+                });
+            }, 2000);
         } catch (e) {
             dispatch({ type: 'SET_ERROR', error: e });
         }
     };
-
     //click drawer
-    const toggleDrawer = () => {
+    const handletoggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
+    };
+    //infinite scroll
+    const handleInfinitScroll = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+
+        if (scrollTop + clientHeight > scrollHeight) {
+            console.log('무한 스크롤 !');
+            setPageNum(pageNum + 1);
+        }
     };
 
     /** 컴포넌트 마운트, 언마운트 **/
     useEffect(() => {
+        //getAPI
         getDatas();
-    }, []);
+
+        //window객체가 scroll 됐을 때
+        window.addEventListener('scroll', handleInfinitScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleInfinitScroll);
+        };
+    }, [pageNum]);
 
     return (
         <div className="wrapper">
@@ -78,12 +102,13 @@ const Search = ({ location }) => {
             </header>
 
             <section>
-                <Drawer open={drawerOpen} toggleDrawer={toggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
+                <Drawer open={drawerOpen} toggleDrawer={handletoggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
                     <DrawerLists />
                 </Drawer>
-                <LikeBox toggleDrawer={toggleDrawer} />
+                <LikeBox toggleDrawer={handletoggleDrawer} />
 
-                {state.loading === true && state.data === null ? <Loading /> : <CardLists items={state.data} />}
+                {!(state.loading && state.data === null) && <CardLists items={state.data} />}
+                {state.loading && <Loading />}
             </section>
         </div>
     );
