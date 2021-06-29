@@ -16,7 +16,6 @@ const Search = ({ location }) => {
     /** 변수 선언부 **/
     const state = useContext(ItemsStateContext);
     const dispatch = useContext(ItemsDispatchContext);
-
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [query, setQuery] = useState(
         qs.parse(location.search, {
@@ -44,16 +43,18 @@ const Search = ({ location }) => {
             }
 
             //API에서 불러온 data와 like정보를 함께 전역 상태로 관리
-            dispatch({
-                type: 'SET_ITEMS',
-                data: res.data.collection.items.slice(0, 20).map((i) => {
-                    return {
-                        ...i.data[0],
-                        imgurl: i.links[0].href,
-                        isLike: likeArr.indexOf(i.data[0].nasa_id) === -1 ? false : true,
-                    };
-                }),
-            });
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_ITEMS',
+                    data: res.data.collection.items.slice(0, 20).map((i) => {
+                        return {
+                            ...i.data[0],
+                            imgurl: i.links[0].href,
+                            isLike: likeArr.indexOf(i.data[0].nasa_id) === -1 ? false : true,
+                        };
+                    }),
+                });
+            }, 2000);
         } catch (e) {
             dispatch({ type: 'SET_ERROR', error: e });
         }
@@ -76,11 +77,6 @@ const Search = ({ location }) => {
 
     /** 컴포넌트 마운트, 언마운트 **/
     useEffect(() => {
-        console.log('mount scroll');
-    }, []);
-
-    useEffect(() => {
-        console.log('mount api');
         //getAPI
         getDatas();
         //window객체가 scroll 됐을 때
@@ -108,7 +104,8 @@ const Search = ({ location }) => {
                 </Drawer>
                 <LikeBox toggleDrawer={handletoggleDrawer} />
 
-                {state.loading === true && state.data === null ? <Loading /> : <CardLists items={state.data} />}
+                {!(state.loading && state.data === null) && <CardLists items={state.data} />}
+                {state.loading && <Loading />}
             </section>
         </div>
     );
