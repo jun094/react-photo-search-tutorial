@@ -21,8 +21,6 @@ function CardSection({ location }) {
     const dispatch = useContext(ItemsDispatchContext);
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    window.state = state;
-
     /** 메소드들 **/
     //get API
     const getDatas = async (mode) => {
@@ -40,8 +38,6 @@ function CardSection({ location }) {
         }
 
         dispatch({ type: 'LOADING' });
-
-        console.log(mode, query, pageNum);
 
         try {
             const res = await Axios.get(`https://images-api.nasa.gov/search?${key}=${val === '' ? '' : val}&page=${pageNum}`);
@@ -84,7 +80,6 @@ function CardSection({ location }) {
         const clientHeight = document.documentElement.clientHeight;
 
         if (scrollTop + clientHeight >= scrollHeight) {
-            console.log('무한 스크롤 !');
             localStorage.setItem('nasa-pageNum-1624981086186', localStorage.getItem('nasa-pageNum-1624981086186') * 1 + 1);
 
             getDatas('more-data');
