@@ -25,7 +25,6 @@ const itemsReducer = (state, action) => {
                 data: null,
                 error: action.error,
             };
-
         case 'UPDATE_LIKE':
             return {
                 loading: false,

@@ -11,6 +11,7 @@ const CustomCard = styled.div`
         border-radius: 4px;
 
         & .img-wrapper {
+            background-image: url('/loading_img.png');
             position: relative;
             & svg {
                 cursor: pointer;
