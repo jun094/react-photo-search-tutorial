@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Card from './Card';
 
 function CardLists({ items }) {
     return (
         <div className="cards-wrapper">
             {items.map((i) => (
-                <Card key={i.data[0].nasa_id} data={i.data[0]} img={i.href} />
+                <Card key={i.nasa_id} data={i} />
             ))}
         </div>
     );
 }
 
-export default CardLists;
+export default React.memo(CardLists);

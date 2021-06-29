@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
+import { withRouter } from 'react-router-dom';
 
 const InputStyle = styled.input`
     width: 276px;
@@ -24,7 +26,13 @@ const InputStyle = styled.input`
 `;
 
 function Input() {
-    return <InputStyle placeholder="검색어를 입력해주세요"></InputStyle>;
+    const [text, setText] = useState('검색어를 입력해주세요');
+
+    const onChange = (e) => {
+        setText(e.target.value);
+    };
+
+    return <InputStyle onChange={onChange} value={text}></InputStyle>;
 }
 
 export default Input;
