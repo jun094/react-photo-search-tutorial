@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
-import { ItemsStateContext } from '../ItemsContext';
 
 const ListStyle = styled.div`
     display: flex;
@@ -31,7 +30,6 @@ const ListStyle = styled.div`
 `;
 
 function DrawerLists() {
-    const state = useContext(ItemsStateContext);
     const [likeLists, setLikeLists] = useState([]);
 
     useEffect(() => {
@@ -46,7 +44,7 @@ function DrawerLists() {
             ) : (
                 <div className="drawer-cards">
                     {likeLists.map((i) => (
-                        <Card key={i.nasa_id} data={i} />
+                        <Card key={i.nasa_id + i.title} data={i} />
                     ))}
                 </div>
             )}

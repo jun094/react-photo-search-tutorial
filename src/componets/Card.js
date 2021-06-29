@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import styled from 'styled-components';
 import { ItemsDispatchContext } from '../ItemsContext';
@@ -12,12 +12,15 @@ const CustomCard = styled.div`
         & .img-wrapper {
             background-image: url('/loading_img.png');
             position: relative;
+            height: 111px;
+
             & svg {
                 cursor: pointer;
                 position: absolute;
                 top: 11.75px;
                 right: 12.26px;
             }
+
             & img {
                 border-top-left-radius: 4px;
                 border-top-right-radius: 4px;
