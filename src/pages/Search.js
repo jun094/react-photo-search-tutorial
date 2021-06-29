@@ -36,10 +36,12 @@ const Search = ({ location }) => {
 
         try {
             const res = await Axios.get(`https://images-api.nasa.gov/search?q=${query}&page=${pageNum}`);
-            //localStorage에서 like 정보를 가져옴.
-            let likeArr = [];
+
+            let likeArr = []; // like를 누른 nasa_id만 저장할 임시 배열
             if (localStorage.getItem('nasa-like-2106261404') !== null) {
-                likeArr = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
+                //localStorage에서 like 정보를 가져옴.
+                //이후, nasa_id만 추출
+                likeArr = JSON.parse(localStorage.getItem('nasa-like-2106261404')).map((i) => i.nasa_id);
             }
 
             //API에서 불러온 data와 like정보를 함께 전역 상태로 관리
@@ -69,7 +71,7 @@ const Search = ({ location }) => {
         const scrollTop = document.documentElement.scrollTop;
         const clientHeight = document.documentElement.clientHeight;
 
-        if (scrollTop + clientHeight >= scrollHeight) {
+        if (scrollTop + clientHeight > scrollHeight) {
             console.log('무한 스크롤 !');
             setPageNum(pageNum + 1);
         }
@@ -79,6 +81,7 @@ const Search = ({ location }) => {
     useEffect(() => {
         //getAPI
         getDatas();
+
         //window객체가 scroll 됐을 때
         window.addEventListener('scroll', handleInfinitScroll);
 

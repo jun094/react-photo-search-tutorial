@@ -1,7 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import styled from 'styled-components';
-import LoadingImg from './LoadingImg';
 import { ItemsDispatchContext } from '../ItemsContext';
 
 const CustomCard = styled.div`
@@ -82,33 +81,15 @@ function CardComponent({ data }) {
     /** 메소드 정리 **/
     // card like 버튼 클릭 메소드
     const handleLike = (click) => {
-        let likeInfo = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
-
-        // like를 누른 경우, 해당 nasa_id 배열로 저장 -> 순차적(like 누른 순) 저장을 위해 배열 사용
         if (click === 'like') {
-            //최초 like를 누른 경우
-            if (likeInfo === null) {
-                // 직렬화해서 localstorage에 저장
-                localStorage.setItem('nasa-like-2106261404', JSON.stringify([nasa_id]));
-            }
-            //like data가 있는 경우
-            else {
-                // 직렬화해서 localstorage에 저장
-                localStorage.setItem('nasa-like-2106261404', JSON.stringify([...likeInfo, nasa_id]));
-            }
-
-            //전역 state 변경
             dispatch({
                 type: 'UPDATE_LIKE',
+                data: data,
                 nasa_id: nasa_id,
             });
         }
         //사진 like를 취소한 경우,
         else if (click === 'none-like') {
-            // nasa_id 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
-            localStorage.setItem('nasa-like-2106261404', JSON.stringify(likeInfo.filter((i) => i !== nasa_id)));
-
-            //전역 state 변경
             dispatch({
                 type: 'UPDATE_DISLIKE',
                 nasa_id: nasa_id,
