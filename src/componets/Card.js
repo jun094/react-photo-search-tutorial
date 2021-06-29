@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import styled from 'styled-components';
 import LoadingImg from './LoadingImg';
-import { ItemsStateContext, ItemsDispatchContext } from '../ItemsContext';
+import { ItemsDispatchContext } from '../ItemsContext';
 
 const CustomCard = styled.div`
     & .card {
@@ -75,10 +75,8 @@ const CustomCard = styled.div`
 
 function CardComponent({ data }) {
     /** 변수 선언부 **/
-    const state = useContext(ItemsStateContext);
     const dispatch = useContext(ItemsDispatchContext);
     const { date_created, description, media_type, nasa_id, title, imgurl, isLike } = data; //text data 비구조할당
-    const [like, setLike] = useState(isLike);
 
     /** 메소드 정리 **/
     // card like 버튼 클릭 메소드
@@ -115,15 +113,13 @@ function CardComponent({ data }) {
                 nasa_id: nasa_id,
             });
         }
-
-        setLike(!like);
     };
 
     return (
         <CustomCard>
             <Card>
                 <div className="img-wrapper">
-                    {!like && (
+                    {!isLike && (
                         <svg
                             onClick={() => handleLike('like')}
                             width="20"
@@ -140,7 +136,7 @@ function CardComponent({ data }) {
                             />
                         </svg>
                     )}
-                    {like && (
+                    {isLike && (
                         <svg
                             onClick={() => handleLike('none-like')}
                             width="24"

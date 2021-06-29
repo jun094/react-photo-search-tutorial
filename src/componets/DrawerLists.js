@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
+import { ItemsStateContext } from '../ItemsContext';
 
 const ListStyle = styled.div`
     display: flex;
@@ -30,22 +31,21 @@ const ListStyle = styled.div`
 `;
 
 function DrawerLists() {
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        if (localStorage.getItem('nasa-like-2106261404')) setItems(JSON.parse(localStorage.getItem('nasa-like-2106261404')));
-    }, []);
+    const state = useContext(ItemsStateContext);
+    const { data } = state;
 
     return (
         <ListStyle>
             <h3>좋아요 리스트</h3>
-            {items.length === 0 ? (
+            {data === null || data.filter((i) => i.isLike === true).length === 0 ? (
                 <div className="drawer-none-cards"> 좋아요 리스트가 없습니다 :(</div>
             ) : (
                 <div className="drawer-cards">
-                    {/* {items.map((i) => (
-                        <Card key={i.data.nasa_id} data={i.data} />
-                    ))} */}
+                    {data
+                        .filter((i) => i.isLike)
+                        .map((i) => (
+                            <Card key={i.nasa_id} data={i} />
+                        ))}
                 </div>
             )}
         </ListStyle>
