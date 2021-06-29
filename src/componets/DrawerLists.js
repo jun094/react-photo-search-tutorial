@@ -43,6 +43,7 @@ function DrawerLists() {
                 <div className="drawer-cards">
                     {data
                         .filter((i) => i.isLike)
+                        .sort((a, b) => b.date_now - a.date_now)
                         .map((i) => (
                             <Card key={i.nasa_id} data={i} />
                         ))}

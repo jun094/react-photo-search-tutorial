@@ -16,7 +16,7 @@ const itemsReducer = (state, action) => {
         case 'SET_ITEMS':
             return {
                 loading: false,
-                data: action.data,
+                data: action.data.map((i) => ({ ...i, date_now: 0 })),
                 error: null,
             };
         case 'SET_ERROR':
@@ -34,6 +34,7 @@ const itemsReducer = (state, action) => {
                         ? {
                               ...obj,
                               isLike: true,
+                              date_now: new Date().getTime(),
                           }
                         : obj
                 ),
@@ -47,6 +48,7 @@ const itemsReducer = (state, action) => {
                         ? {
                               ...obj,
                               isLike: false,
+                              date_now: 0,
                           }
                         : obj
                 ),
