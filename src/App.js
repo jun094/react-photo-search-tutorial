@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, useHistory, withRouter } from 'react-router-dom';
 import './styles/global.scss';
 import './styles/bootstrap.v4.goorm.min.css';
-import Search from './pages/Search';
+import Home from './pages/Home';
 import { ItemsProvider } from './ItemsContext';
 
 const App = ({ location }) => {
@@ -18,7 +18,7 @@ const App = ({ location }) => {
     return (
         <ItemsProvider>
             <div className="app-root">
-                <Route path="/search" component={Search} />
+                <Route path="/search" component={Home} />
             </div>
         </ItemsProvider>
     );

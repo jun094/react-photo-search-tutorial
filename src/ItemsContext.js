@@ -10,24 +10,30 @@ const itemsReducer = (state, action) => {
 
     window.ac = action.data;
     switch (action.type) {
-        case 'SETTING_ITEMS':
+        case 'LOADING':
             return {
                 loading: true,
                 data: state.data === null ? null : state.data,
                 error: null,
             };
-        case 'SET_ITEMS':
-            return {
-                loading: false,
-                data: state.data === null ? action.data.map((i) => ({ ...i, date_now: 0 })) : state.data.concat(action.data),
-                //data: action.data.map((i) => ({ ...i, date_now: 0 })),
-                error: null,
-            };
-        case 'SET_ERROR':
+        case 'ERROR':
             return {
                 loading: false,
                 data: null,
                 error: action.error,
+            };
+
+        case 'SET_ITEMS':
+            return {
+                loading: false,
+                data: action.data.map((i) => ({ ...i, date_now: 0 })),
+                error: null,
+            };
+        case 'ADD_ITEMS':
+            return {
+                loading: false,
+                data: state.data.concat(action.data),
+                error: null,
             };
         case 'UPDATE_LIKE':
             /*** localStorage 저장 과정 ***/

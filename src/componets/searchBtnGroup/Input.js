@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import { withRouter } from 'react-router-dom';
+import qs from 'qs';
 
 const InputStyle = styled.input`
     width: 276px;
@@ -25,14 +25,21 @@ const InputStyle = styled.input`
     }
 `;
 
-function Input() {
-    const [text, setText] = useState('검색어를 입력해주세요');
+function Input({ history, location }) {
+    const [text, setText] = useState(
+        qs.parse(location.search, {
+            ignoreQueryPrefix: true,
+        }).q
+    );
 
     const onChange = (e) => {
-        setText(e.target.value);
+        const { value } = e.target;
+
+        setText(value);
+        history.replace(`/search?q=${value}`);
     };
 
-    return <InputStyle onChange={onChange} value={text}></InputStyle>;
+    return <InputStyle onChange={onChange} value={text} placeholder="검색어를 입력해주세요"></InputStyle>;
 }
 
-export default Input;
+export default withRouter(React.memo(Input));
