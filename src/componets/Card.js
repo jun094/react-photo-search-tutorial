@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import Axios from 'axios';
 import LoadingImg from './LoadingImg';
+import { ItemsStateContext, ItemsDispatchContext } from '../ItemsContext';
 
 const CustomCard = styled.div`
     & .card {
@@ -76,6 +75,8 @@ const CustomCard = styled.div`
 
 function CardComponent({ data }) {
     /** 변수 선언부 **/
+    const state = useContext(ItemsStateContext);
+    const dispatch = useContext(ItemsDispatchContext);
     const { date_created, description, media_type, nasa_id, title, imgurl, isLike } = data; //text data 비구조할당
     const [like, setLike] = useState(isLike);
 
@@ -96,11 +97,23 @@ function CardComponent({ data }) {
                 // 직렬화해서 localstorage에 저장
                 localStorage.setItem('nasa-like-2106261404', JSON.stringify([...likeInfo, nasa_id]));
             }
+
+            //전역 state 변경
+            dispatch({
+                type: 'UPDATE_LIKE',
+                nasa_id: nasa_id,
+            });
         }
         //사진 like를 취소한 경우,
         else if (click === 'none-like') {
             // nasa_id 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
             localStorage.setItem('nasa-like-2106261404', JSON.stringify(likeInfo.filter((i) => i !== nasa_id)));
+
+            //전역 state 변경
+            dispatch({
+                type: 'UPDATE_DISLIKE',
+                nasa_id: nasa_id,
+            });
         }
 
         setLike(!like);
@@ -164,7 +177,7 @@ function CardComponent({ data }) {
     );
 }
 
-export default CardComponent;
+export default React.memo(CardComponent);
 
 CardComponent.defaultProps = {
     data: {

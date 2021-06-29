@@ -1,6 +1,5 @@
-import React, { useReducer } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
-import { useEffect, useState } from 'react';
 import '../styles/home.scss';
 import LikeBox from '../componets/LikeBox';
 import DropDownBtn from '../componets/searchBtnGroup/DropDownBtn';
@@ -11,39 +10,30 @@ import Loading from '../componets/Loading';
 import Drawer from '../componets/Drawer';
 import DrawerLists from '../componets/DrawerLists';
 import qs from 'qs';
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'SET_ITEMS':
-            return {
-                data: action.data,
-            };
-
-        default:
-            return state;
-    }
-}
-
-//card-items 데이터들 전역 처리를 위한 Context API
-export const ItemsDispatch = React.createContext(null);
+import { ItemsStateContext, ItemsDispatchContext } from '../ItemsContext';
 
 const Search = ({ location }) => {
     /** 변수 선언부 **/
+    const state = useContext(ItemsStateContext);
+    const dispatch = useContext(ItemsDispatchContext);
+
     const [query, setQuery] = useState(
         qs.parse(location.search, {
             ignoreQueryPrefix: true,
         })
     );
-    const [isLoading, setIsLoading] = useState(true);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [items, dispatch] = useReducer(reducer, []); // 사진 itmes 전역 상태로 저장
 
-    window.items = items;
+    window.state = state;
 
     /** 메소드들 **/
     //get API
-    const getDatas = () => {
-        Axios.get(`https://images-api.nasa.gov/search${location.search}`).then((res) => {
+    const getDatas = async () => {
+        dispatch({ type: 'SETTING_ITEMS' });
+
+        try {
+            const res = await Axios.get(`https://images-api.nasa.gov/search${location.search}`);
+
             //localStorage에서 like 정보를 가져옴.
             let likeArr = [];
             if (localStorage.getItem('nasa-like-2106261404') !== null) {
@@ -61,11 +51,11 @@ const Search = ({ location }) => {
                     };
                 }),
             });
-
-            //사용자에게 동기적 흐름을 보여주기 위한 loading 변수
-            setIsLoading(false);
-        });
+        } catch (e) {
+            dispatch({ type: 'SET_ERROR', error: e });
+        }
     };
+
     //click drawer
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
@@ -77,29 +67,26 @@ const Search = ({ location }) => {
     }, []);
 
     return (
-        <ItemsDispatch.Provider value={dispatch}>
-            <div className="wrapper">
-                <header>
-                    <h1 className="header-text">NASA 사진 검색</h1>
-                    <div className="header-search-box">
-                        <DropDownBtn />
-                        <Input />
-                        <SearchBtn />
-                    </div>
-                </header>
+        <div className="wrapper">
+            <header>
+                <h1 className="header-text">NASA 사진 검색</h1>
+                <div className="header-search-box">
+                    <DropDownBtn />
+                    <Input />
+                    <SearchBtn />
+                </div>
+            </header>
 
-                <section>
-                    <Drawer open={drawerOpen} toggleDrawer={toggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
-                        <DrawerLists />
-                    </Drawer>
-                    <LikeBox toggleDrawer={toggleDrawer} />
+            <section>
+                <Drawer open={drawerOpen} toggleDrawer={toggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
+                    <DrawerLists />
+                </Drawer>
+                <LikeBox toggleDrawer={toggleDrawer} />
 
-                    {isLoading && <Loading />}
-                    {!isLoading && <CardLists items={items.data} />}
-                </section>
-            </div>
-        </ItemsDispatch.Provider>
+                {state.loading === true && state.data === null ? <Loading /> : <CardLists items={state.data} />}
+            </section>
+        </div>
     );
 };
 
-export default Search;
+export default React.memo(Search);

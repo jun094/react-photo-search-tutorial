@@ -11,4 +11,4 @@ function CardLists({ items }) {
     );
 }
 
-export default CardLists;
+export default React.memo(CardLists);
