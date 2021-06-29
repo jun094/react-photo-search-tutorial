@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 const BtnStyle = styled.button`
     padding: 9px 16px;
@@ -19,4 +20,4 @@ function SearchBtn() {
     return <BtnStyle>검색하기</BtnStyle>;
 }
 
-export default SearchBtn;
+export default withRouter(React.memo(SearchBtn));

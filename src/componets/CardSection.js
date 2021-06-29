@@ -26,12 +26,13 @@ function CardSection({ location }) {
     /** 메소드들 **/
     //get API
     const getDatas = async (mode) => {
-        let query = qs.parse(location.search, {
+        const query = qs.parse(location.search, {
             ignoreQueryPrefix: true,
-        }).q; // url query string
+        }); // url query string
+        const key = Object.keys(query)[0];
+        const val = query[Object.keys(query)[0]];
 
         let pageNum = 1; //무한스크롤을 위한 Page num
-
         if (mode === 'init-data') {
             localStorage.setItem('nasa-pageNum-1624981086186', 1); //처음에는 1을 Localstorage에 저장
         } else {
@@ -43,7 +44,7 @@ function CardSection({ location }) {
         console.log(mode, query, pageNum);
 
         try {
-            const res = await Axios.get(`https://images-api.nasa.gov/search?q=${query === '' ? '' : query}&page=${pageNum}`);
+            const res = await Axios.get(`https://images-api.nasa.gov/search?${key}=${val === '' ? '' : val}&page=${pageNum}`);
 
             let likeArr = []; // like를 누른 nasa_id만 저장할 임시 배열
             if (localStorage.getItem('nasa-like-2106261404') !== null) {

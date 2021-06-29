@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
+import qs from 'qs';
 
 const StyleDropDown = styled.div`
     cursor: pointer;
@@ -49,13 +51,23 @@ const StyleDropMenu = styled.div`
         color: #1d6ce0;
     }
 `;
-function DropDownBtn() {
-    const [selectState, setSelectState] = useState('전체');
+function DropDownBtn({ history, location }) {
+    const query = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+    });
+    const key = Object.keys(query)[0];
+
+    const [selectState, setSelectState] = useState(key === 'q' ? '전체' : key === 'title' ? '제목' : '설명');
     const [dropdownOpen, setOpen] = useState(false);
+
     const toggle = (e) => {
         const { id } = e.target;
-        if (id) setSelectState(id);
         setOpen(!dropdownOpen);
+
+        if (id) {
+            setSelectState(id === 'q' ? '전체' : id === 'title' ? '제목' : '설명');
+            history.replace(`/search?${id}=${query[key]}`);
+        }
     };
 
     return (
@@ -72,13 +84,13 @@ function DropDownBtn() {
                 </svg>
             </StyleDropDown>
             <StyleDropMenu dropdownOpen={dropdownOpen} onClick={toggle}>
-                <div id="전체" className="drop-item">
+                <div id="q" className="drop-item">
                     전체
                 </div>
-                <div id="제목" className="drop-item">
+                <div id="title" className="drop-item">
                     제목
                 </div>
-                <div id="설명" className="drop-item">
+                <div id="description" className="drop-item">
                     설명
                 </div>
             </StyleDropMenu>
@@ -86,4 +98,4 @@ function DropDownBtn() {
     );
 }
 
-export default DropDownBtn;
+export default withRouter(React.memo(DropDownBtn));
