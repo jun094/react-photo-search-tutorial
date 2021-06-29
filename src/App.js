@@ -12,7 +12,7 @@ const App = ({ location }) => {
     /** 컴포넌트 마운트, 언마운트 **/
     useEffect(() => {
         // 최초 redirect는 'seoul'과 관련된 임의 데이터
-        if (location.pathname === '/') history.replace('/search?q=seoul&page=1');
+        if (location.pathname === '/') history.replace('/search?q=seoul');
     }, []);
 
     return (

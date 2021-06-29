@@ -10,13 +10,14 @@ const itemsReducer = (state, action) => {
         case 'SETTING_ITEMS':
             return {
                 loading: true,
-                data: null,
+                data: state.data === null ? null : state.data,
                 error: null,
             };
         case 'SET_ITEMS':
             return {
                 loading: false,
-                data: action.data.map((i) => ({ ...i, date_now: 0 })),
+                data: state.data === null ? action.data.map((i) => ({ ...i, date_now: 0 })) : state.data.concat(action.data),
+                //data: action.data.map((i) => ({ ...i, date_now: 0 })),
                 error: null,
             };
         case 'SET_ERROR':
