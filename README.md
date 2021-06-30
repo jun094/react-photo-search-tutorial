@@ -1,11 +1,11 @@
-# NASA 사진 검색 어플리케이션
+# 사진 검색 어플리케이션
 
 
 <br/>
 
 
 ## 개요
-- NASA 에서 제공하는 API를 사용하여 '우주' 관련 사진 검색을 도와줌
+- API를 사용하여 '우주' 관련 사진 검색을 도와줌
 - API : https://images-api.nasa.gov/search
 
 <br/>
@@ -57,3 +57,9 @@
 - ```/componets/searchBtnGroup/SearchBtn.js``` :  select(전체,제목,설명) 검색 
 - ```/componets/searchBtnGroup/Input.js``` :  input text 검색 
 
+<br/>
+
+## 디자인 시스템
+
+- 페이지관련 스타일은 필자가 익숙한 scss를 사용
+- 컴퍼넌트 스타일은 재사용성을 고려하여, styled-componet를 사용 
