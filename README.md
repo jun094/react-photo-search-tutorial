@@ -3,12 +3,16 @@
 
 <br/>
 
+
+## 개요
+- NASA 에서 제공하는 API를 사용하여 '우주' 관련 사진 검색을 도와줌
+- API : https://images-api.nasa.gov/search
+
+
 ## 시작
 
 1. ```npm install```
 2. ```yarn start```
-
-
 
 
 ## NPM 설치 목록
@@ -40,13 +44,11 @@
 - '좋아요' 클릭시, 해당 카드 정보는 localstorage 저장되며, 전역 상태를 ```isLike=true``` 로 최신화함.
 - 두 곳에 모두 저장하는 이유는 사진리스트 정보는 전역상태(api)에 종속되며, 좋아요 정보는 localsotrage에 종속하기 위함.
 
-
 #### 3. 무한스크롤 기능
 - ```/componets/CardSection.js``` 의 ```handleInfinitScroll``` 함수
 - scroll 값 계산을 통해 데이터를 append해줌.
 - NASA API에서는 page당 100개의 item 제공 ( https://images-api.nasa.gov/search?q=galaxy&page=1 )
 - page 값은 로컬스토리지에 저장 후, 맨 하단에 내려왔을 때마다 로컬 스토리지의 page값을 +1씩 더해줌
-
 
 #### 4. 검색 기능
 - ```/componets/searchBtnGroup/SearchBtn.js``` :  select(전체,제목,설명) 검색 
