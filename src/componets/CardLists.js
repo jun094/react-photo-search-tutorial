@@ -15,7 +15,7 @@ function CardLists({ items }) {
     return (
         <StyleSearchWrapper>
             {items.map((i, idx) => (
-                <Card key={idx} data={i} />
+                <Card key={i.nasa_id + i.title} data={i} />
             ))}
         </StyleSearchWrapper>
     );

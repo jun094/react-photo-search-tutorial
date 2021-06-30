@@ -8,7 +8,6 @@ const initialItems = {
 const itemsReducer = (state, action) => {
     let likeInfo = JSON.parse(localStorage.getItem('nasa-like-2106261404'));
 
-    window.ac = action.data;
     switch (action.type) {
         case 'LOADING':
             return {
@@ -26,7 +25,7 @@ const itemsReducer = (state, action) => {
         case 'SET_ITEMS':
             return {
                 loading: false,
-                data: action.data.map((i) => ({ ...i, date_now: 0 })),
+                data: action.data,
                 error: null,
             };
         case 'ADD_ITEMS':
@@ -39,12 +38,9 @@ const itemsReducer = (state, action) => {
             /*** localStorage 저장 과정 ***/
             // like를 누른 경우, 해당 nasa_id 배열로 저장 -> 순차적(like 누른 순) 저장을 위해 배열 사용
             if (likeInfo === null) {
-                localStorage.setItem(
-                    'nasa-like-2106261404',
-                    JSON.stringify([{ ...action.data, isLike: true, date_now: new Date().getTime() }])
-                );
+                localStorage.setItem('nasa-like-2106261404', JSON.stringify([{ ...action.data, isLike: true }]));
             } else {
-                likeInfo.unshift({ ...action.data, isLike: true, date_now: new Date().getTime() });
+                likeInfo.unshift({ ...action.data, isLike: true });
                 localStorage.setItem('nasa-like-2106261404', JSON.stringify(likeInfo));
             }
 
@@ -56,7 +52,6 @@ const itemsReducer = (state, action) => {
                         ? {
                               ...obj,
                               isLike: true,
-                              date_now: new Date().getTime(),
                           }
                         : obj
                 ),
@@ -74,7 +69,6 @@ const itemsReducer = (state, action) => {
                         ? {
                               ...obj,
                               isLike: false,
-                              date_now: 0,
                           }
                         : obj
                 ),
