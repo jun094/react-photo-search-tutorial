@@ -27,8 +27,8 @@ function CardSection({ location }) {
         const query = qs.parse(location.search, {
             ignoreQueryPrefix: true,
         }); // url query string
-        const key = Object.keys(query)[0];
-        const val = query[Object.keys(query)[0]];
+        const key = Object.keys(query)[0]; //query의 객체의 키값
+        const val = query[Object.keys(query)[0]]; //query 객체의 value값
 
         let pageNum = 1; //무한스크롤을 위한 Page num
         if (mode === 'init-data') {
@@ -62,8 +62,6 @@ function CardSection({ location }) {
                         };
                     }),
             });
-
-            //무한스크롤을 위한 page number 저장
         } catch (e) {
             dispatch({ type: 'ERROR', error: e });
         }

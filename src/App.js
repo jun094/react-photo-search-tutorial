@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Route, useHistory, withRouter } from 'react-router-dom';
+import { Switch, Route, useHistory, withRouter } from 'react-router-dom';
 import './styles/global.scss';
 import './styles/bootstrap.v4.goorm.min.css';
 import Home from './pages/Home';
 import { ItemsProvider } from './ItemsContext';
+import ErrorPage from './pages/ErrorPage';
 
 const App = ({ location }) => {
     /** 선언부 **/
@@ -18,7 +19,10 @@ const App = ({ location }) => {
     return (
         <ItemsProvider>
             <div className="app-root">
-                <Route path="/search" component={Home} />
+                <Switch>
+                    <Route path="/search" component={Home} />
+                    <Route component={ErrorPage} />
+                </Switch>
             </div>
         </ItemsProvider>
     );

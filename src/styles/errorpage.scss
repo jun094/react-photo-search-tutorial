@@ -1,0 +1,16 @@
+.wrapper {
+    padding: 80px 40px;
+    margin: 0 auto;
+
+    //고정창 UI 제공
+    width: 1452px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    & h1 {
+        font-size: 32px;
+        font-weight: 600;
+    }
+}
