@@ -8,12 +8,14 @@
 - NASA 에서 제공하는 API를 사용하여 '우주' 관련 사진 검색을 도와줌
 - API : https://images-api.nasa.gov/search
 
+<br/>
 
 ## 시작
 
 1. ```npm install```
 2. ```yarn start```
 
+<br/>
 
 ## NPM 설치 목록
 
@@ -28,6 +30,7 @@
 - react-router-dom 
 - qs
 
+<br/>
 
 ## 기능 설명
 
