@@ -3,6 +3,11 @@
 
 <br/>
 
+## 시작
+1. ```npm install```
+2. ```yarn start```
+
+
 ## NPM 설치 목록
 - CRA
 - yarn 
