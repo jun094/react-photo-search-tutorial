@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 
-const StyleError = styled.div`
+const StyleNoSearch = styled.div`
     width: 100%;
     text-align: center;
     margin-top: 120px;
@@ -15,17 +15,17 @@ const StyleError = styled.div`
         font-weight: 500;
     }
 `;
-const Error = ({ location }) => {
+const NoSearch = ({ location }) => {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true,
     });
     const key = Object.keys(query)[0];
 
     return (
-        <StyleError>
+        <StyleNoSearch>
             <span>‘{query[key]}'</span>에 대한 검색결과가 없습니다.
-        </StyleError>
+        </StyleNoSearch>
     );
 };
 
-export default withRouter(React.memo(Error));
+export default withRouter(React.memo(NoSearch));

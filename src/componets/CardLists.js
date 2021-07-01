@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from './Card';
 import styled from 'styled-components';
-import Error from './Error';
+import NoSearch from './NoSearch';
 
 const StyleSearchWrapper = styled.div`
     margin-top: 20px;
@@ -11,7 +11,7 @@ const StyleSearchWrapper = styled.div`
     column-gap: 20px;
 `;
 function CardLists({ items }) {
-    if (items === null || items.length === 0) return <Error />;
+    if (items === null || items.length === 0) return <NoSearch />;
     return (
         <StyleSearchWrapper>
             {items.map((i, idx) => (
