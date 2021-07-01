@@ -1,8 +1,8 @@
 import React, { useReducer, createContext } from 'react';
 
 const initialItems = {
-    loading: true,
-    data: null,
+    loading: false,
+    data: [],
     error: null,
 };
 const itemsReducer = (state, action) => {
@@ -12,7 +12,7 @@ const itemsReducer = (state, action) => {
         case 'LOADING':
             return {
                 loading: true,
-                data: state.data === null ? null : state.data,
+                data: state.data === null ? [] : state.data.length === 0 ? [] : state.data,
                 error: null,
             };
         case 'ERROR':
