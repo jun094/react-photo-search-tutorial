@@ -20,26 +20,45 @@
 ## NPM 설치 목록
 
 - CRA
-- yarn 
+- Yarn 
 - Reactstrap 
 - Bootstrap
 - Sass 
-- styled-components 
+- Styled-components 
 - Axios 
-- material-ui
-- react-router-dom 
-- qs
+- Material-ui
+- React-router-dom 
+- Qs (querystring parsing)
 
 <br/>
 
 ## 기능 설명
 
-#### 1. 사진 리스트
-- 전역 상태관리를 위한 ```Context API```와 ```uesReducer``` 사용
+### 1. 검색어 실시간 처리
+
+  #### 1.1 작동 순서
+  - uesState를 활용한 Input value값 상태 저장
+  - react-router-dom의 history 객체를 활용하여, 해당 value값을 query string에 포함하여 페이지 이동
+  - useEffect를 활용하여, react-router-dom의 location값이 달라질 때마다 ```getDatas()``` 함수 호출
+
+#### 1.2 ```getDatas``` 함수
+- 해당함수는 비동기 처리를 위해 ```async``` 로 선언
+- 최초로 데이터를 호출하는 경우에는 ```mode=init-data```
+- 무한스크롤 기능에 의해 추가적인 데이터 호출 경우에는 ```mode=more-data```
+
+
+#### 1.3 ```getDatas``` 함수의 비동기 과정
+- context API를 활용하여 [```ItemContex.js```](https://github.com/jun094/react-photo-search-tutorial/blob/master/src/ItemsContext.js)의 Loading state를 true로 변경
+- try문 입장 : API처리, localStorage의 page number와 like 정보 처리, dispatch 처리
+- try문에서 하나라도 에러 발생 시, catch문 입장
+
+
+#### 2. 사진 리스트
+- 사진전역 상태관리를 위한 ```Context API```와 ```uesReducer``` 사용
 - 리듀서와 context는 ```ItemContext.js``` 한 곳에서 모두 관리
 - 사진리스트 정보는 ```CardLists.js``` 에서 map함수에 의해 순차적으로 추출됨
 
-#### 2. 좋아요 기능
+#### 3. 좋아요 기능
 - ```/componets/Card.js``` 의 ```handleLike``` 함수
 - Drawer의 '좋아요' 정보는 ```DrawerLists.js``` 에서 map함수에 의해 순차적으로 추출됨.
 - 메인페이지의 '좋아요' 정보는 전역상태를 참조함.
@@ -47,15 +66,12 @@
 - '좋아요' 클릭시, 해당 카드 정보는 localstorage 저장되며, 전역 상태를 ```isLike=true``` 로 최신화함.
 - 두 곳에 모두 저장하는 이유는 사진리스트 정보는 전역상태(api)에 종속되며, 좋아요 정보는 localsotrage에 종속하기 위함.
 
-#### 3. 무한스크롤 기능
+#### 4. 무한스크롤 기능
 - ```/componets/CardSection.js``` 의 ```handleInfinitScroll``` 함수
 - scroll 값 계산을 통해 데이터를 append해줌.
 - NASA API에서는 page당 100개의 item 제공 ( https://images-api.nasa.gov/search?q=galaxy&page=1 )
 - page 값은 로컬스토리지에 저장 후, 맨 하단에 내려왔을 때마다 로컬 스토리지의 page값을 +1씩 더해줌
 
-#### 4. 검색 기능
-- ```/componets/searchBtnGroup/SearchBtn.js``` :  select(전체,제목,설명) 검색 
-- ```/componets/searchBtnGroup/Input.js``` :  input text 검색 
 
 <br/>
 
