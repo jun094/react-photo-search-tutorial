@@ -89,7 +89,7 @@ function CardSection({ location }) {
     }, [drawerOpen]);
 
     //infinite scroll
-    const handleInfinitScroll = async () => {
+    const handleInfinitScroll = () => {
         const scrollHeight = document.documentElement.scrollHeight;
         const scrollTop = document.documentElement.scrollTop;
         const clientHeight = document.documentElement.clientHeight;
