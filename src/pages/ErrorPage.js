@@ -2,7 +2,6 @@ import React from 'react';
 import '../styles/errorpage.scss';
 
 const ErrorPage = ({ e }) => {
-    console.log(e);
     return (
         <div className="wrapper">
             {e ? (
