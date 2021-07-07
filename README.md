@@ -6,7 +6,7 @@
 
 ## 개요
 - API를 사용하여 '우주 사진' 관련 검색을 도와줌
-- API : https://images-api.nasa.gov/search
+- API : ```비공개```
 
 <br/>
 
