@@ -79,7 +79,7 @@ const CustomCard = styled.div`
 function CardComponent({ data }) {
     /** 변수 선언부 **/
     const dispatch = useContext(ItemsDispatchContext);
-    const { date_created, description, media_type, nasa_id, title, imgurl, isLike } = data; //text data 비구조할당
+    const { date_created, description, nasa_id, title, imgurl, isLike } = data; //text data 비구조할당
 
     /** 메소드 정리 **/
     // card like 버튼 클릭 메소드
