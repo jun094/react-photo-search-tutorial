@@ -83,7 +83,7 @@
 ### 4. 무한스크롤 기능
 - ```/componets/CardSection.js``` 의 [```handleInfinitScroll```](https://github.com/jun094/react-photo-search-tutorial/blob/master/src/componets/CardSection.js#L92) 함수
 - scroll 값 계산을 통해 데이터를 append해줌.
-- NASA API에서는 page당 100개의 item 제공 ( https://images-api.nasa.gov/search?q=galaxy&page=1 )
+- NASA API에서는 page당 100개의 item 제공 ( https://API?q=galaxy&page=1 )
 - page 값은 로컬스토리지에 저장 후, 맨 하단에 내려왔을 때마다 LocalStorage의 page값을 +1씩 더해줌
 
 
