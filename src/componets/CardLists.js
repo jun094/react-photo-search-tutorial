@@ -11,7 +11,7 @@ const StyleSearchWrapper = styled.div`
     column-gap: 20px;
 `;
 function CardLists({ items }) {
-    if (items.length === 0) return <NoSearch />;
+    if (items === null || items.length === 0) return <NoSearch />;
     return (
         <StyleSearchWrapper>
             {items.map((i, idx) => (

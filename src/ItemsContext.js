@@ -2,7 +2,7 @@ import React, { useReducer, createContext } from 'react';
 
 const initialItems = {
     loading: false,
-    data: [],
+    data: null,
     error: null,
 };
 const itemsReducer = (state, action) => {
@@ -12,7 +12,7 @@ const itemsReducer = (state, action) => {
         case 'LOADING':
             return {
                 loading: true,
-                data: state.data === null ? [] : state.data.length === 0 ? [] : state.data,
+                data: action.data === 'init-data' ? null : state.data,
                 error: null,
             };
         case 'ERROR':
@@ -25,18 +25,12 @@ const itemsReducer = (state, action) => {
         case 'SET_ITEMS':
             return {
                 loading: false,
-                data: action.data,
-                error: null,
-            };
-        case 'ADD_ITEMS':
-            return {
-                loading: false,
-                data: state.data.concat(action.data),
+                data: state.data ? state.data.concat(action.data) : action.data,
                 error: null,
             };
         case 'UPDATE_LIKE':
             /*** localStorage 저장 과정 ***/
-            // like를 누른 경우, 해당 nasa_id 배열로 저장 -> 순차적(like 누른 순) 저장을 위해 배열 사용
+            // like를 누른 경우, 해당 nasa_id 배열로 저장 -> 순차적(like 누른 순) 저장을 위해 likeInfo는 배열 사용
             if (likeInfo === null) {
                 localStorage.setItem('nasa-like-2106261404', JSON.stringify([{ ...action.data, isLike: true }]));
             } else {

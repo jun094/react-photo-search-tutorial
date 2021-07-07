@@ -36,10 +36,11 @@ function CardSection({ location }) {
 
         const key = Object.keys(query)[0]; //query의 객체의 키값
         const val = query[Object.keys(query)[0]]; //query 객체의 value값
+
         let pageNum = 1; //무한스크롤을 위한 Page number
         let likeArr = []; // 좋아요 기능을 위한 nase_id 정보를 담을 배열
 
-        dispatch({ type: 'LOADING' });
+        dispatch({ type: 'LOADING', data: mode });
 
         try {
             // 1. LocalStorage 처리 (like 정보와 page number 정보)
@@ -61,7 +62,7 @@ function CardSection({ location }) {
             //API에서 불러온 data와 like정보를 함께 전역 상태로 관리
             if (res.data.collection.items !== null) {
                 dispatch({
-                    type: mode === 'init-data' ? 'SET_ITEMS' : 'ADD_ITEMS',
+                    type: 'SET_ITEMS',
                     data: res.data.collection.items
                         .filter((i) => i.links)
                         .map((i) => {
@@ -74,15 +75,10 @@ function CardSection({ location }) {
                 });
             }
         } catch (e) {
-            // api 호출 취소
             if (Axios.isCancel(e)) {
-                console.log('Request canceled');
-
-                dispatch({ type: 'LOADING' }); //  api 호출 취소할 때는 사용자에게loading 컴포넌트를 보여준다.
-            }
-            // 기본 오류 처리
-            else {
-                dispatch({ type: 'ERROR', error: e });
+                // api 호출 취소
+            } else {
+                dispatch({ type: 'ERROR', error: e }); // 기본 오류 처리
             }
         }
     };
@@ -119,6 +115,7 @@ function CardSection({ location }) {
         };
     }, [location.search]);
 
+    //console.log(error, data);
     return (
         <>
             <Drawer open={drawerOpen} toggleDrawer={handletoggleDrawer} colo="#000000" backgroundColor="#F7F7FA">
@@ -127,18 +124,27 @@ function CardSection({ location }) {
             <LikeBox open={drawerOpen} toggleDrawer={handletoggleDrawer} />
 
             {
-                //1. data
-                //1.1 api에서 호출된 data가 잘못됐을 때 -> data = null -> ErrorPage
-                //1.2 api에서 호출된 data가 없을 때 -> data.length = 0 -> CardLists
-                //1.3 api에서 호출된 data가 정상적일 때 -> data.length != 0 -> CardLists
-                //
-                //2. loading
-                //2.1 true인 경우, spinner 생성
-                //2.2 false인 경우, spinner 높이만 차지하는 빈공간 출력
+                //case 1. error인 경우 -> error page
+                //case 2. loading = true & data=null 인 경우 -> spinner
+                //case 3. loading = true & data 있는 경우 -> data & spinner
+                //case 4. loading false 인 경우 -> data & none-spinner
             }
 
-            {data === null ? <ErrorPage e={error} /> : <CardLists items={data} />}
-            {loading === true ? <Loading /> : <NoneLoading />}
+            {error ? (
+                <ErrorPage e={error} />
+            ) : loading === true && data == null ? (
+                <Loading />
+            ) : loading === true && data ? (
+                <>
+                    <CardLists items={data} />
+                    <Loading />
+                </>
+            ) : (
+                <>
+                    <CardLists items={data} />
+                    <NoneLoading />
+                </>
+            )}
         </>
     );
 }
