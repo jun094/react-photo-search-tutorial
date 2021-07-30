@@ -12,7 +12,7 @@
 
 ## 시작
 
-1. ```npm install```
+1. ```yarn install```
 2. ```yarn start```
 
 <br/>
