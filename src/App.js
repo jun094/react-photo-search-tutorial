@@ -5,6 +5,7 @@ import './styles/bootstrap.v4.goorm.min.css';
 import Home from './pages/Home';
 import { ItemsProvider } from './ItemsContext';
 import ErrorPage from './pages/ErrorPage';
+import DatePicker from './componets/DatePicker/DatePicker';
 
 const App = ({ location }) => {
     /** 선언부 **/
@@ -17,14 +18,16 @@ const App = ({ location }) => {
     }, []);
 
     return (
-        <ItemsProvider>
-            <div className="app-root">
-                <Switch>
-                    <Route path="/search" component={Home} />
-                    <Route component={ErrorPage} />
-                </Switch>
-            </div>
-        </ItemsProvider>
+        // <ItemsProvider>
+        //     <div className="app-root">
+        //         <Switch>
+        //             <Route path="/search" component={Home} />
+        //             <Route component={ErrorPage} />
+        //         </Switch>
+        //     </div>
+        // </ItemsProvider>
+
+        <DatePicker />
     );
 };
 
